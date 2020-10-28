@@ -3,11 +3,17 @@ import { isObject, forEach, set, castArray, startsWith } from 'lodash'
 import pluralize from 'pluralize'
 
 module.exports = async ({ apiURL, contentType, singleType, jwtToken, status, queryLimit, reporter }) => {
+  var statusUrl = ""
+  if (status.length > 0) {
+    status.map(stat => {
+      statusUrl = `&search_in=${stat}`
+    })
+  }
   // Define API endpoint.
   let apiBase = singleType ? `${apiURL}/${singleType}` : `${apiURL}/${pluralize(contentType)}`
 
-  const apiEndpoint = `${apiBase}?_limit=${queryLimit}&status_in=${status}`
-
+  var apiEndpoint = `${apiBase}?_limit=${queryLimit}`
+  if (statusUrl != "") { apiEndpoint = apiEndpoint + statusUrl }
   reporter.info(`Starting to fetch data from Strapi - ${apiEndpoint}`)
 
   try {
