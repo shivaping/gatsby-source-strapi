@@ -2,11 +2,11 @@ import axios from 'axios'
 import { isObject, forEach, set, castArray, startsWith } from 'lodash'
 import pluralize from 'pluralize'
 
-module.exports = async ({ apiURL, contentType, singleType, jwtToken, queryLimit, reporter }) => {
+module.exports = async ({ apiURL, contentType, singleType, jwtToken, status, queryLimit, reporter }) => {
   // Define API endpoint.
   let apiBase = singleType ? `${apiURL}/${singleType}` : `${apiURL}/${pluralize(contentType)}`
 
-  const apiEndpoint = `${apiBase}?_limit=${queryLimit}`
+  const apiEndpoint = `${apiBase}?_limit=${queryLimit}&status_in=${status}`
 
   reporter.info(`Starting to fetch data from Strapi - ${apiEndpoint}`)
 
